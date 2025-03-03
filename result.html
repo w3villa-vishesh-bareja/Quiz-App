@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <script defer src="./result.js" type="module"></script>
+    <link rel="stylesheet" href="./resultstyle.css">
+</head>
+<body>
+    <section class="result-container">
+        <div class="performance-badge" id="grade">A+</div>
+        
+        <div class="header">
+            <h1>Quiz Complete!</h1>
+            <div id="final-score">Your Score: 8 / 10</div>
+        </div>
+        
+        <div class="score-details">
+            <div class="score-card">
+                <div class="score-label">Correct</div>
+                <div class="score-value" id="correct-count">8</div>
+            </div>
+            <div class="score-card">
+                <div class="score-label">Incorrect</div>
+                <div class="score-value" id="incorrect-count">2</div>
+            </div>
+            <div class="score-card">
+                <div class="score-label">Accuracy</div>
+                <div class="score-value" id="accuracy">80%</div>
+            </div>
+        </div>
+        
+        <div class="questions-container" id="questions-container">
+        </div>
+        
+        <div class="result-actions">
+            <button class="action-button" onclick="retakeQuiz()">Retake Quiz</button>
+            <button class="action-button secondary" onclick="shareResults()">Share Results</button>
+        </div>
+    </section>
+
+</body>
+</html>

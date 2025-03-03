@@ -1,0 +1,377 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #2a2a72 0%, #009ffd 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow: hidden;
+    color: #fff;
+}
+
+.quiz-cotainer {
+    width: 100%;
+    max-width: 900px;
+    padding: 40px;
+    background: rgba(20, 23, 39, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 60px rgba(71, 126, 232, 0.2);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quiz-cotainer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.difficulty-indicator {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    padding: 12px 20px !important;
+    border-radius: 50px !important;
+    margin-bottom: 25px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    letter-spacing: 1px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+.difficulty-level {
+    font-weight: bold !important;
+    padding: 5px 10px !important;
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    display: inline-block !important;
+    margin-left: 10px !important;
+}
+
+.question {
+    margin-bottom: 25px;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.question span {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.4;
+}
+
+.timer {
+    width: fit-content;
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    margin: 0 auto 25px auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 1px;
+}
+
+.timer.warning {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin: 0 auto 30px auto;
+}
+
+.option {
+    width: 100%;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.option:hover {
+    transform: translateY(-3px);
+}
+
+.option label {
+    font-size: 1.3rem;
+    width: 100%;
+    display: block;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.3s ease;
+    text-align: left;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.option label:hover {
+    background: rgba(71, 126, 232, 0.3);
+    color: #fff;
+}
+
+.option label::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #477ee8, #3a63bc);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.option:hover label::before {
+    opacity: 1;
+}
+
+.option input[type="radio"] {
+    display: none;
+}
+
+.option input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, rgba(71, 126, 232, 0.8), rgba(58, 99, 188, 0.8));
+    box-shadow: 0 0 20px rgba(71, 126, 232, 0.5);
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.option input[type="radio"]:checked + label::before {
+    opacity: 1;
+    width: 100%;
+    background: linear-gradient(135deg, rgba(71, 126, 232, 0.2), rgba(58, 99, 188, 0.2));
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px;
+}
+
+#submit {
+    width: 180px;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #477ee8, #3a63bc);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
+}
+
+#submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+}
+
+#submit:active {
+    transform: translateY(1px);
+}
+
+#submit::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+}
+
+#submit:hover::after {
+    animation: shine 1.5s infinite;
+}
+
+@keyframes shine {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Pagination Dots */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    margin: 0 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.dot.active {
+    background-color: #477ee8;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(71, 126, 232, 0.7);
+}
+
+.dot.completed {
+    background-color: rgba(150, 201, 61, 0.8);
+}
+
+@keyframes slideIn {
+    0% { transform: translateX(50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(-50px); opacity: 0; }
+}
+
+.slide-in {
+    animation: slideIn 0.4s ease-out forwards;
+}
+
+.slide-out {
+    animation: slideOut 0.4s ease-in forwards;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    50% { transform: translateX(8px); }
+    75% { transform: translateX(-8px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+.difficulty-notification {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50px);
+    padding: 15px 30px;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.loading::after {
+    content: "";
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: #477ee8;
+}
+
+
+
+@media (max-width: 768px) {
+    .quiz-cotainer {
+        padding: 25px;
+    }
+    
+    .question span {
+        font-size: 1.3rem;
+    }
+    
+    .option label {
+        font-size: 1.1rem;
+        padding: 14px 16px;
+    }
+    
+    #submit {
+        width: 150px;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .quiz-cotainer {
+        padding: 20px;
+    }
+    
+    .question span {
+        font-size: 1.1rem;
+    }
+    
+    .option label {
+        font-size: 1rem;
+        padding: 12px 14px;
+    }
+    
+    .timer {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+    
+    #submit {
+        width: 130px;
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+}

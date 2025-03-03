@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="./homepage.css">
+    <script src="https://kit.fontawesome.com/24535b5205.js" crossorigin="anonymous"></script>
+    <script defer src="./script.js" type="module"></script>
+</head>
+<body>
+    <!-- Add this to your HTML body, outside of the wrapper div -->
+<div class="modal-overlay" id="createQuizModal">
+    <div class="create-quiz-modal">
+        <div class="modal-header">
+            <h2>Create Your Own Quiz</h2>
+            <p>Customize your quiz by specifying topics and difficulty</p>
+            <button class="close-modal" id="closeModal">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="quizTitle">Quiz Title</label>
+                <input type="text" id="quizTitle" placeholder="Give your quiz a catchy title">
+            </div>
+            
+            <div class="form-group">
+                <label for="quizTopics">Topics (separate with commas)</label>
+                <input type="text" id="quizTopics" placeholder="e.g., Quantum Physics, Black Holes, Space Exploration">
+            </div>
+            
+            <div class="form-group">
+                <label>Difficulty Level</label>
+                <div class="difficulty-options">
+                    <div class="difficulty-option easy">
+                        <input type="radio" id="difficultyEasy" name="difficulty" value="easy" checked>
+                        <label for="difficultyEasy">Easy</label>
+                    </div>
+                    <div class="difficulty-option medium">
+                        <input type="radio" id="difficultyMedium" name="difficulty" value="medium">
+                        <label for="difficultyMedium">Medium</label>
+                    </div>
+                    <div class="difficulty-option hard">
+                        <input type="radio" id="difficultyHard" name="difficulty" value="hard">
+                        <label for="difficultyHard">Hard</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="questionCount">Number of Questions</label>
+                <div class="questions-count">
+                    <button id="decreaseQuestions" disabled><i class="fa-solid fa-minus"></i></button>
+                    <input type="number" id="questionCount" min="5" max="20" value="10" readonly>
+                    <button id="increaseQuestions"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="additionalInstructions">Additional Instructions (Optional)</label>
+                <textarea id="additionalInstructions" placeholder="Any specific requirements for your quiz..."></textarea>
+            </div>
+        </div>
+        
+        <div class="loading-state" id="loadingState">
+            <div class="loading-spinner"></div>
+            <p>Generating your quiz questions...</p>
+        </div>
+        
+        <div class="modal-footer">
+            <button id="generateQuizBtn">Generate Quiz</button>
+        </div>
+    </div>
+</div>
+    <div class="wrapper">
+    <section class="navbar">
+        <div class="title-container">
+            <div class="logo">
+                <h1>Think Tap</h1>
+                <img src="./Gemini_Generated_Image_o6bizio6bizio6bi-removebg-preview.png" alt="">
+            </div>
+            <div class="create-quiz">
+                <div class="create-text">
+                    <div class="icon-class">
+                        <i class="fa-solid fa-plus"></i>    
+                    </div>
+                    <p>Create Your Own Quiz!!</p>
+                </div>
+            </div>
+        </div>
+        <div class="Logout">
+            <span class="icon-class">
+                <i class="fa fa-sign-out-alt"></i> 
+            </span>
+            <p>Logout</p>
+        </div>
+    </section>
+
+    <section class="quiz-menu">
+        <div>
+            <h4>Start</h4>
+            <h1> Quiz</h1>
+        </div>
+        <div class="menu-button">
+            <button class="category">Sports</button>
+            <button class="category">History</button>
+            <button class="category">Animals</button>
+            <button class="category">Computers</button>
+        </div>
+        <div class="quizScores">
+            <h2>Your Quiz History</h2>
+            <div class="no-data">
+                <i class="fa-solid fa-history"></i>
+                Your quiz history will appear here
+            </div>
+        </div>
+    </section>
+    <section class="Login-menu">
+        <div>
+            <h1>Login</h1>
+            <h4>Login to Play Quiz And Create Your Own Quiz!!</h4>
+        </div>
+        <div class="menu-button">
+            <button id="login">Sign In With Google</button>
+        </div>
+    </section>
+</div>
+    <!-- <div class="Login-text">
+        <h4>Login To See More Categories</h4>
+    </div> -->
+</body>
+</html>
