@@ -1,6 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-import { getFirestore, addDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { getFirestore, addDoc, doc, collection, query, where, getDocs , setDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+let ip;
 
 const firebaseConfig = {
   apiKey: "AIzaSyB4LsvBDCDzwy7Y7ofGBK9V62cH-056x8U",
@@ -48,6 +50,7 @@ if (loggedin) {
 
   // Fetching scores
   fetchUserScores(loggedin.uid);
+
 
 } else {
   const logoutBtn = document.querySelector(".Logout");
@@ -103,7 +106,45 @@ async function fetchUserScores(userId) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+async function getIP() {
+  try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      // console.log(data.ip)
+      // document.getElementById('ip').innerText = `Your IP Address: ${data.ip}`;
+      ip = data.ip;
+      // console.log(ip)
+  } catch (error) {
+      console.error('Error fetching IP address:', error);
+  }
+}
+async function TrialCheck() {
+  const docRef = collection(db, "Trials");
+  console.log(ip)
+  const q = query(docRef, where("ip", "==", ip));
+  const docSnap = await getDocs(q);
+
+  if (!docSnap.empty) {
+    // Document exists, log its data
+    docSnap.forEach((docSnapshot) => {
+      console.log(docSnapshot.id, " => ", docSnapshot.data());
+    });
+  } else {
+    // Create a new document with `isTrial: true`
+    const newDocRef = doc(docRef); // Generate a new document ID
+    await setDoc(newDocRef, { ip: ip, isTrial: true });
+    console.log("New trial document created:", newDocRef.id);
+    return true;
+  }
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await getIP();
+  console.log(ip)
+  const showTrial = TrialCheck();
+  console.log(typeof(ip))
+  console.log(showTrial)
   const createQuizBtn = document.querySelector(".create-text");
   const modal = document.getElementById("createQuizModal");
   const closeModalBtn = document.getElementById("closeModal");
