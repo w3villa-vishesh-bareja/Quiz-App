@@ -379,7 +379,7 @@ body::after {
 .menu-button button:hover::before {
     animation: shine 1.5s infinite;
 }
-
+    
 @keyframes shine {
     100% { transform: translateX(100%); }
 }

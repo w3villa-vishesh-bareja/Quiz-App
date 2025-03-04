@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-import { getFirestore, addDoc, doc, collection, query, where, getDocs , setDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { getFirestore, addDoc, doc, collection, query, where, getDocs , setDoc , updateDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 let ip;
 
@@ -118,33 +118,38 @@ async function getIP() {
       console.error('Error fetching IP address:', error);
   }
 }
+
 async function TrialCheck() {
   const docRef = collection(db, "Trials");
-  console.log(ip)
   const q = query(docRef, where("ip", "==", ip));
   const docSnap = await getDocs(q);
 
   if (!docSnap.empty) {
-    // Document exists, log its data
-    docSnap.forEach((docSnapshot) => {
-      console.log(docSnapshot.id, " => ", docSnapshot.data());
-    });
+    const firstDoc = docSnap.docs[0]; 
+    console.log("Trial Status:", firstDoc.data().isTrial);
+    return { id: firstDoc.id, isTrial: firstDoc.data().isTrial }; // Return doc ID and isTrial status
   } else {
-    // Create a new document with `isTrial: true`
-    const newDocRef = doc(docRef); // Generate a new document ID
+    // Create new document with isTrial: true
+    const newDocRef = doc(docRef);
     await setDoc(newDocRef, { ip: ip, isTrial: true });
     console.log("New trial document created:", newDocRef.id);
-    return true;
+    return { id: newDocRef.id, isTrial: true };
   }
+}
+async function disableTrial(docId) {
+  const trialRef = doc(db, "Trials", docId);
+  await updateDoc(trialRef, { isTrial: false });
+  console.log("Trial disabled for:", docId);
 }
 
 
 document.addEventListener("DOMContentLoaded", async () => {
   await getIP();
   console.log(ip)
-  const showTrial = TrialCheck();
+  // const showTrial = await TrialCheck();
   console.log(typeof(ip))
-  console.log(showTrial)
+  // console.log(showTrial)
+
   const createQuizBtn = document.querySelector(".create-text");
   const modal = document.getElementById("createQuizModal");
   const closeModalBtn = document.getElementById("closeModal");
@@ -178,7 +183,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
   }
 
-  // Handle difficulty selection
   difficultyOptions.forEach(option => {
       option.addEventListener("click", () => {
           difficultyOptions.forEach(opt => opt.classList.remove("selected"));
@@ -274,5 +278,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (easyOption && easyOption.checked) {
       const easyDifficultyOption = document.querySelector('.difficulty-option.easy');
       if (easyDifficultyOption) easyDifficultyOption.classList.add("selected");
+  }
+  
+  const freeTrial = document.querySelector("#Free-Trial")
+  const trialData = await TrialCheck(ip);
+  const showTrial = trialData.isTrial;
+  const docId = trialData.id; // Get document ID
+  if (!showTrial) {
+    freeTrial.style.display = "none"; // Hide the free trial button
+  } else {
+    freeTrial.addEventListener("click", async () => {
+      await disableTrial(docId); // Set trial to false
+      window.location.href = `./question.html?category=Sports`; // Redirect
+    });
   }
 });
